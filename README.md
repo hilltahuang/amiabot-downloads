@@ -8,11 +8,11 @@ This repository distributes official installers, release notes and checksums. Th
 
 | Platform | Requirements | Version 0.2.2 file |
 | --- | --- | --- |
-| Android | Android 7.0+, current Android System WebView recommended | `amiabot-0.2.2-android.apk` |
-| Windows | Windows 10/11, x64; WebView2 offline installer included | `amiabot-0.2.2-windows-x64-setup.exe` |
-| macOS | macOS 11+, Apple Silicon or Intel | `amiabot-0.2.2-macos-universal.dmg` |
+| Android | Android 7.0+, current Android System WebView recommended | [APK and checksum](https://hilltahuang.itch.io/amiabot#download) |
+| Windows | Windows 10/11, x64; WebView2 offline installer included | [EXE and checksum](https://github.com/hilltahuang/amiabot-downloads/releases/tag/v0.2.2) |
+| macOS | macOS 11+, Apple Silicon or Intel | [Universal DMG and checksum](https://hilltahuang.itch.io/amiabot#download) |
 
-Each installer has a separate SHA-256 checksum file in the release. Android uses the existing production signing identity. Windows has no publisher signing certificate. The universal macOS app is ad-hoc signed and is not Apple notarized. Use your device's normal installation and security controls.
+Separate SHA-256 checksum files accompany the installers on their download pages. Android uses the existing production signing identity. Windows has no publisher signing certificate. The universal macOS app is ad-hoc signed and is not Apple notarized. Use your device's normal installation and security controls.
 
 Choose **Play offline** to start a device life without an account. Local lives remain on that device. Before uninstalling or clearing app data, export a copy from **Settings → Device saves** and keep it private. Cloud sync and purchases require an internet connection; tables are unavailable offline. Existing cloud lives stay linked to their original accounts.
 
