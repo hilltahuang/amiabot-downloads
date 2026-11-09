@@ -1,0 +1,26 @@
+{
+  "version": "0.2.2",
+  "name": "amiabot-0.2.2-windows-x64-setup.exe",
+  "bytes": 221040538,
+  "sha256": "ae2a01fb40f9401a773159201a7395e0773346752f72043e75f15b33cac5b849",
+  "archiveSha256": "1a7172532f1ef07df5caa289d68ee6c660c87d63a4d4cca9e97e3e206fd44208",
+  "sourceCommit": "9c36c85bf7cd22720abcb2906df1755bfdd01d33",
+  "optionalMirrors": {
+    "amiabot-0.2.2-android.apk": {
+      "bytes": 4364440,
+      "sha256": "1c8240ec9fc0ead7cc90ace0511939cd95fdf1cc81f5d666f63f336aac87d4a9"
+    },
+    "amiabot-0.2.2-android-SHA256SUMS.txt": {
+      "bytes": 92,
+      "sha256": "8fba57ae4d95e0be70fe7330a4b1c8a3803ad17f02384149b6f8c51383b034b2"
+    },
+    "amiabot-0.2.2-macos-universal.dmg": {
+      "bytes": 8771897,
+      "sha256": "114016aec93373df69cb30f6e2390f2e65ebe63dfc55aa65f2b6919515d2e763"
+    },
+    "amiabot-0.2.2-macos-SHA256SUMS.txt": {
+      "bytes": 100,
+      "sha256": "c5a56d0474033893cc92bfecde60dbd353c776be2d361f100bc50c9e1c2892aa"
+    }
+  }
+}

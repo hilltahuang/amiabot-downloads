@@ -1,0 +1,27 @@
+name: Publish verified Windows installer
+on:
+  workflow_dispatch:
+    inputs:
+      transfer_url:
+        description: Short-lived GitHub artifact download ticket
+        required: true
+        type: string
+permissions:
+  contents: write
+concurrency:
+  group: official-installers
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Verify source archive and publish official download
+        run: python3 tools/publish.py
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TRANSFER_URL: ${{ inputs.transfer_url }}
