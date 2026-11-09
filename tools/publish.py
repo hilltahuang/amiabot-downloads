@@ -72,7 +72,12 @@ for file in out.iterdir():
 # An earlier browser draft may contain completed Android mirrors. Retain only
 # independently verified complete assets; never expose an incomplete transfer.
 for name, a in assets.items():
-    assert a['state'] == 'uploaded'
+    if a['state'] != 'uploaded':
+        # Discard only a failed browser transfer in this unpublished draft.
+        # Completed public files are never replaced by this workflow.
+        assert release['draft'] and name in manifest['optionalMirrors']
+        gh('api', '--method', 'DELETE', f'repos/{repo}/releases/assets/{a["id"]}')
+        continue
     if name not in {p.name for p in out.iterdir()}:
         expected = manifest['optionalMirrors'].get(name)
         assert expected and a['size'] == expected['bytes'] and a['digest'] == 'sha256:' + expected['sha256']
