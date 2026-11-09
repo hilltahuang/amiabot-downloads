@@ -1,0 +1,22 @@
+amiabot 0.2.2 - Windows x64 installer bundle
+
+Requirements: Windows 10 or Windows 11, 64-bit.
+
+1. Extract this ZIP into a normal folder.
+2. The SHA256SUMS text file records the original EXE's SHA-256 digest.
+   You can compare it with Get-FileHash in Windows PowerShell.
+3. Run amiabot-0.2.2-windows-x64-setup.exe using the normal Windows installation flow.
+   This independent release has no Windows publisher signing certificate.
+   Follow your device's normal security controls.
+
+The installer includes the WebView2 offline runtime installer. Choose Play offline
+to start a device life without an account. Cloud lives, sync and purchases require
+an internet connection. Existing cloud lives stay linked to the original account.
+
+Before uninstalling or clearing app data, export local progress from
+Settings -> Device saves. Keep exported saves private.
+
+Official website: https://www.amiabot.lol
+Terms: https://www.amiabot.lol/terms.html
+Privacy: https://www.amiabot.lol/privacy.html
+For adults 18+ and the local age of adulthood, subject to the Terms.

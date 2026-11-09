@@ -42,6 +42,17 @@ with zipfile.ZipFile(archive) as source:
     (out / manifest['name']).write_bytes(data)
 checksum = f'amiabot-{version}-windows-SHA256SUMS.txt'
 (out / checksum).write_text(manifest['sha256'] + '  ' + manifest['name'] + '\n')
+bundle = out / f'amiabot-{version}-windows-x64.zip'
+with zipfile.ZipFile(bundle, 'w') as package:
+    for name, data in [(manifest['name'], (out / manifest['name']).read_bytes()),
+                       (checksum, (out / checksum).read_bytes()),
+                       ('INSTALL.txt', Path('windows-install.txt').read_bytes())]:
+        info = zipfile.ZipInfo(name, (2026, 11, 9, 0, 0, 0))
+        info.compress_type = zipfile.ZIP_STORED
+        info.external_attr = 0o100644 << 16
+        package.writestr(info, data)
+bundle_checksum = out / f'amiabot-{version}-windows-zip-SHA256SUMS.txt'
+bundle_checksum.write_text(hashlib.sha256(bundle.read_bytes()).hexdigest() + '  ' + bundle.name + '\n')
 
 title = f'amiabot {version} — official free downloads'
 releases = json.loads(gh('api', f'repos/{repo}/releases'))
@@ -52,8 +63,10 @@ request = {'tag_name': tag, 'name': title, 'body': Path('release-notes.md').read
 Path('release-request.json').write_text(json.dumps(request))
 if candidates:
     release = candidates[0]
-    assert release['draft'], 'Published versions are immutable; use a new version.'
-    release = json.loads(gh('api', '--method', 'PATCH', f'repos/{repo}/releases/{release["id"]}', '--input', 'release-request.json'))
+    if release['draft']:
+        release = json.loads(gh('api', '--method', 'PATCH', f'repos/{repo}/releases/{release["id"]}', '--input', 'release-request.json'))
+    else:
+        assert os.environ.get('BUNDLE_ONLY') == 'true', 'Existing releases only accept an explicitly requested verified bundle.'
 else:
     release = json.loads(gh('api', '--method', 'POST', f'repos/{repo}/releases', '--input', 'release-request.json'))
 assets = {a['name']: a for a in json.loads(gh('api', f'repos/{repo}/releases/{release["id"]}/assets'))}
@@ -63,6 +76,8 @@ for file in sorted(out.iterdir()):
         a = assets[file.name]
         assert a['state'] == 'uploaded' and a['size'] == file.stat().st_size and a.get('digest') == digest
         continue
+    if not release['draft']:
+        assert file.name in (bundle.name, bundle_checksum.name), 'Published installers cannot be replaced.'
     gh('release', 'upload', tag, str(file))
 assets = {a['name']: a for a in json.loads(gh('api', f'repos/{repo}/releases/{release["id"]}/assets'))}
 for file in out.iterdir():
@@ -81,7 +96,8 @@ for name, a in assets.items():
     if name not in {p.name for p in out.iterdir()}:
         expected = manifest['optionalMirrors'].get(name)
         assert expected and a['size'] == expected['bytes'] and a['digest'] == 'sha256:' + expected['sha256']
-Path('release-publish.json').write_text(json.dumps({'draft': False, 'make_latest': 'true'}))
-result = json.loads(gh('api', '--method', 'PATCH', f'repos/{repo}/releases/{release["id"]}', '--input', 'release-publish.json'))
-assert not result['draft']
-print(result['html_url'])
+if release['draft']:
+    Path('release-publish.json').write_text(json.dumps({'draft': False, 'make_latest': 'true'}))
+    release = json.loads(gh('api', '--method', 'PATCH', f'repos/{repo}/releases/{release["id"]}', '--input', 'release-publish.json'))
+assert not release['draft']
+print(release['html_url'])

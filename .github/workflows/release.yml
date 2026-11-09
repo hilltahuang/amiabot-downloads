@@ -6,6 +6,11 @@ on:
         description: Short-lived GitHub artifact download ticket
         required: true
         type: string
+      bundle_only:
+        description: Add only a verified ZIP bundle to an existing release
+        required: true
+        default: false
+        type: boolean
 permissions:
   contents: write
 concurrency:
@@ -25,3 +30,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           TRANSFER_URL: ${{ inputs.transfer_url }}
+          BUNDLE_ONLY: ${{ inputs.bundle_only }}
